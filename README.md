@@ -2,11 +2,7 @@
 
 Java obfuscation remapper by elfasmedyje.
 
-Renames obfuscated classes, fields, and methods using string constants found in the bytecode as naming anchors, then rewrites all references throughout the entire JAR using ASM's ClassRemapper. Designed as the next step after ENI_StringDumper in the RE pipeline:
-
-**Memory Dump → Carvix → ENI_StringDumper → JarRemapper → CFR**
-
-Works on any JAR without needing to know which obfuscator was used. Handles Mixin-based clients, inner class hierarchies, enum constant detection, invokedynamic string tables, and structural classification when no string anchors are available.
+Renames obfuscated classes, fields, and methods using string constants found in the bytecode as naming anchors, then rewrites all references throughout the entire JAR using ASM's ClassRemapper. Handles Mixin-based clients, inner class hierarchies, enum constant detection, invokedynamic string tables, and structural classification when no string anchors are available.
 
 ---
 
@@ -96,19 +92,6 @@ Renames are applied in priority order. Higher passes only touch classes and memb
 | `[HIGH]` | Developer-written name (`@Shadow`, `@Mixin`) or runtime-decrypted string attributed to this class |
 | `[MEDIUM]` | String anchor from bytecode LDC or field constant |
 | `[LOW]` | Structural, hierarchy, or call-site guess |
-
----
-
-## Using ENI_StringDumper output
-
-Pass the per-package `.log` files from ENI_StringDumper with `-strings` for the best results. These attribute each decrypted string to its source class, giving the remapper HIGH-confidence anchors that static bytecode scanning alone cannot recover.
-
-```
-java -cp .;asm-9.8.jar ENI_StringDumper -json someobfuscated.jar
-java -jar JarRemapper.jar -strings someobfuscated_dump/packages/com.example.log someobfuscated.jar
-```
-
-Using `all_strings.txt` instead works but all strings are treated as unattributed and scored at half weight.
 
 ---
 
