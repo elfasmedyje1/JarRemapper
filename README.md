@@ -9,7 +9,7 @@ Renames obfuscated classes, fields, and methods using string constants found in 
 ## Requirements
 
 - Java 8+
-- `asm-9.x.jar` + `asm-commons-9.x.jar` on the classpath to compile (ASM is bundled in the release JAR so you only need them to build from source)
+- `asm-9.x.jar` + `asm-commons-9.x.jar` to compile from source (both are bundled in the release JAR — not needed to run)
 
 ---
 
@@ -18,6 +18,8 @@ Renames obfuscated classes, fields, and methods using string constants found in 
 ```
 javac -cp asm-9.8.jar;asm-commons-9.8.jar JarRemapper.java
 ```
+
+On Linux/macOS use `:` instead of `;` in the classpath.
 
 ---
 
@@ -39,7 +41,7 @@ Output goes next to the input JAR by default:
 |------|-------------|
 | `-out FILE` | Custom output JAR path |
 | `-map FILE` | Custom mapping file path |
-| `-strings FILE` | Pre-decrypted strings from ENI_StringDumper (per-package `.log` files or `all_strings.txt`) |
+| `-strings FILE` | Pre-decrypted strings file from ENI_StringDumper — use a per-package `.log` file for attributed strings, or `all_strings.txt` for unattributed (half weight) |
 | `-decrypt` | Attempt inline decryption by triggering `<clinit>` (unsafe, best-effort) |
 | `-decompile` | Automatically run CFR decompiler on the output JAR |
 | `-libs DIR` | Directory of library JARs to load for better class resolution |
