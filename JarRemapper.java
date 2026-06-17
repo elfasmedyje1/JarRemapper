@@ -31,7 +31,7 @@ public class JarRemapper {
     // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Scoring policy constants ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
     // Anchor scores are multiplied by these weights depending on how class-specific
     // the evidence is. Higher weight = stronger preference when picking a class name.
-    /** Runtime-decrypted strings (ENI external input) are bound to one class ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â boost them. */
+    /** Runtime-decrypted strings from external input are bound to one class — boost them. */
     static final double WEIGHT_EXTERNAL          = 1.3;
     /** Unattributed all_strings.txt fallback: only wins when a class has no other anchor. */
     static final double WEIGHT_UNATTRIBUTED      = 0.5;
@@ -94,11 +94,11 @@ public class JarRemapper {
     // String-anchor reject patterns. scoreString() runs once per candidate string (every LDC,
     // field constant and external string), so these are pre-compiled rather than recompiled
     // per call via String.matches().
-    /** Slash-separated internal class name, e.g. "net/minecraft/Foo". */
+    /** Slash-separated internal class name, e.g. "com/example/Foo". */
     static final Pattern SLASH_PATH       = Pattern.compile("[A-Za-z0-9_$/]+(?:/[A-Za-z0-9_$/]+)+");
     /** Version string, e.g. "1.8.0_202" or "21.0.3". */
     static final Pattern VERSION_STRING   = Pattern.compile("[0-9]+\\.[0-9]+[._][0-9].*");
-    /** Lowercase fully-qualified class name with 3+ segments, e.g. "net.minecraft.client.Minecraft". */
+    /** Lowercase fully-qualified class name with 3+ segments, e.g. "com.example.client.Main". */
     static final Pattern LOWER_FQCN       = Pattern.compile("[a-z][a-z0-9_$]*(\\.[a-z][a-z0-9_$]*){2,}.*");
     /** Bare HTTP header name, e.g. "Content-Type", "X-Forwarded-For". */
     static final Pattern HTTP_HEADER_NAME = Pattern.compile("[A-Za-z][A-Za-z0-9]*(?:-[A-Za-z][A-Za-z0-9]*)+");
@@ -131,7 +131,7 @@ public class JarRemapper {
             "enabled", "disabled", "none", "success", "failed", "unknown", "default",
             // Crypto noise (base64 alphabet strings handled separately in scoreString)
             "aes", "des", "cbc", "ecb", "nopadding", "pkcs5padding",
-            // Minecraft / game-engine specific ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â appear in dozens of classes
+            // Domain-specific words that appear in many classes — too generic for class names
             "world", "level", "player", "entity", "block", "chunk", "item", "inventory",
             "packet", "update", "render", "tick", "game",
             // Architectural patterns ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â too generic as class names
@@ -225,7 +225,7 @@ public class JarRemapper {
 
         System.out.println("[+] Loaded " + classes.size() + " classes, " + resources.size() + " resources.");
 
-        // Optional: load pre-decrypted strings from ENI_StringDumper output
+        // Optional: load pre-decrypted strings from external string dump
         Map<String, List<String>> externalStrings = new HashMap<>();
         if (STRINGS_FILE != null) {
             externalStrings = loadExternalStrings(new File(STRINGS_FILE));
@@ -350,7 +350,7 @@ public class JarRemapper {
         boolean isAnnotation;
         int abstractMethodCount;
         boolean abstractMethodsReturnVoid = true; // for Consumer/Function interface classification
-        // @Shadow-annotated members carry exact original Minecraft names ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â highest confidence
+        // @Shadow-annotated members carry the original target names — highest confidence
         Map<String, String> shadowFields  = new LinkedHashMap<>(); // obfuscated name -> shadow name
         Map<String, String> shadowMethods = new LinkedHashMap<>(); // obfuscated name+desc -> shadow name
         // String pool / table detection
@@ -436,7 +436,7 @@ public class JarRemapper {
                         if ((access & Opcodes.ACC_STATIC) != 0 && descriptor.equals("[Ljava/lang/String;")) {
                             hasStaticStringArray[0] = true;
                         }
-                        // Detect @Shadow annotation ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â carries the original Minecraft field name
+                        // Detect @Shadow annotation — carries the original target field name
                         return new FieldVisitor(Opcodes.ASM9) {
                             @Override
                             public AnnotationVisitor visitAnnotation(String desc, boolean visible) {
@@ -482,10 +482,10 @@ public class JarRemapper {
                         return new MethodVisitor(Opcodes.ASM9) {
                             // In the Mixin framework, @Shadow methods that shadow an accessor whose name
                             // begins with a reserved prefix (default "shadow$") have that prefix stripped
-                            // to recover the original Minecraft method name. The prefix is configurable
+                            // to recover the original method name. The prefix is configurable
                             // via @Shadow(prefix = "...") and defaults to "shadow$". When isShadow is
                             // true and the declared name starts with shadowPrefix, we strip it before
-                            // recording the mapping, giving us the actual target name in Minecraft.
+                            // recording the mapping, giving us the actual target name.
                             boolean isShadow = false;
                             String shadowPrefix = "shadow$";
 
@@ -528,11 +528,11 @@ public class JarRemapper {
     }
 
     // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ External string loading ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-    // Load external strings from ENI_StringDumper output.
+    // Load external strings from a pre-decrypted string dump.
     // Accepts two formats:
     //   (a) Package .log files:  ClassName.fieldName[index] = "escaped_value"
     //   (b) all_strings.txt:     one raw escaped value per line (no source prefix)
-    // In both cases ENI escape sequences (\n, \r, \t, \\, \") are decoded before
+    // In both cases escape sequences (\n, \r, \t, \\, \") are decoded before
     // the string is scored, so high-bytes / special chars don't depress the score.
 
     static Map<String, List<String>> loadExternalStrings(File f) {
@@ -567,7 +567,7 @@ public class JarRemapper {
         return result;
     }
 
-    /** Decode ENI_StringDumper escape sequences back to the original characters. */
+    /** Decode escape sequences back to the original characters. */
     static String unescapeEni(String s) {
         if (s.indexOf('\\') < 0) return s;
         StringBuilder sb = new StringBuilder(s.length());
@@ -592,7 +592,7 @@ public class JarRemapper {
 
     static String extractClassName(String source) {
         // Strip array indices like [0] and method call notation like [ldc:methodName],
-        // [bsm:method], [strtable:...], [classref:...], [indy:...] ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â all ENI bracket formats.
+        // [bsm:method], [strtable:...], [classref:...], [indy:...] — all known bracket formats.
         source = source.replaceAll("\\[.*", "");
         // Strip method call parens like "methodName()"
         source = source.replaceAll("\\(\\)", "");
@@ -1004,7 +1004,7 @@ public class JarRemapper {
     }
 
     // ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ Pass 0: @Shadow annotations ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬ÃƒÂ¢Ã¢â‚¬ÂÃ¢â€šÂ¬
-    // @Shadow fields/methods in Mixin classes carry the exact original Minecraft name written
+    // @Shadow fields/methods in Mixin classes carry the exact original target name written
     // by the developer. Apply these before any heuristic pass so they get HIGH confidence.
     static void pass0ShadowMembers(RenameContext ctx) {
         Map<String, ClassMeta> metaMap = ctx.metaMap;
@@ -1448,7 +1448,7 @@ public class JarRemapper {
      * Best-effort inline string decryption: loads each class so its
      * &lt;clinit&gt; runs the obfuscator's decryption routine, then reads back
      * static String fields. This is inherently UNSAFE (it executes attacker
-     * bytecode) and, unlike ENI_StringDumper, performs no anti-analysis
+     * bytecode) and, unlike the full string dumper, performs no anti-analysis
      * patching or stubbing ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â so on heavily protected JARs most classes will
      * fail to initialise. Each class is therefore run under a wall-clock
      * timeout and all failures are counted and reported, so the run is honest
@@ -1977,7 +1977,7 @@ public class JarRemapper {
         }
 
         // ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â pattern rejects (paths, crypto modes, Java properties, versions, FQCNs, base64, ciphertext)
-        // Reject internal class name strings (slash-path format like "net/minecraft/Foo")
+        // Reject internal class name strings (slash-path format like "com/example/Foo")
         if (s.contains("/") && SLASH_PATH.matcher(s).matches()) return 0.0;
         // Reject crypto algorithm strings ÃƒÂ¢Ã¢â€šÂ¬Ã¢â‚¬Â they appear in every encrypted class and are useless as names
         if (s.contains("/") && (low.contains("padding") || low.contains("pkcs") || low.contains("cbc")
@@ -1994,7 +1994,7 @@ public class JarRemapper {
         // Reject version strings like "1.8.0_202", "21.0.3"
         if (VERSION_STRING.matcher(s).matches()) return 0.0;
         // Reject fully-qualified class names: two or more lowercase-only dot-separated segments
-        // (e.g. "net.minecraft.client.Minecraft") but allow mixed-case like "KillAura.Range"
+        // (e.g. "com.example.client.Main") but allow mixed-case like "MyClass.Field"
         if (s.contains(".") && LOWER_FQCN.matcher(s).matches()) return 0.0;
         // Reject bare HTTP header names ("Content-Type", "Accept-Encoding", "X-Forwarded-For").
         // These match the pattern Word-Word and appear in any class doing HTTP but are useless as names.
