@@ -9,14 +9,14 @@ Renames obfuscated classes, fields, and methods using string constants found in 
 ## Requirements
 
 - Java 8+
-- Nothing else — ASM is bundled in the JAR
+- `asm-9.x.jar` + `asm-commons-9.x.jar` on the classpath to compile (ASM is bundled in the release JAR so you only need them to build from source)
 
 ---
 
 ## Compile
 
 ```
-javac -cp asm-9.8.jar JarRemapper.java
+javac -cp asm-9.8.jar;asm-commons-9.8.jar JarRemapper.java
 ```
 
 ---
